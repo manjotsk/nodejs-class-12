@@ -17,14 +17,8 @@ const app = express();
 app.use(express.json());
 
 app.use('/customers', customerRouter)
-app.use((req,res,next)=>{
-    console.log('hi')
-    next()
-})
+
 app.use('/books', bookRouter)
-app.use((req,res,next)=>{
-    console.log('bye')
-})
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');

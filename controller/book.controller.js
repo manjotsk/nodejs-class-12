@@ -21,6 +21,7 @@ const listBookController = async (req, res, next) => {
       data: listOfBook,
     });
   } catch (error) {
+    console.error(error)
     res.send(500,"Something went wrong")
 }
 };

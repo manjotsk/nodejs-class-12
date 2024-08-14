@@ -16,7 +16,7 @@ const createBook=async(book)=>{
 }
 
 const listBooks=async()=>{
-    const books=await Book.find.dwfdwefew()
+    const books=await Book.find()
     return books
 }
 

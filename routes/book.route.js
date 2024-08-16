@@ -1,5 +1,5 @@
 const express = require('express');
-const { createBookController, listBookController } = require('../controller/book.controller');
+const { createBookController, listBookController, getBookById, updateBookController, deleteBookController } = require('../controller/book.controller');
 
 const bookRouter = express.Router();
 
@@ -15,6 +15,7 @@ bookRouter.get('/test', (req1,res,next)=>{
     next()
 }, (req2,res,next)=>{
     console.log('2nd controller')
+    throw new Error("band ho ja");  
     next()
 }, (req3,res,next)=>{
     console.log('3 controller')
@@ -38,5 +39,11 @@ bookRouter.get('/test', (req1,res,next)=>{
 
     next()
 }, )
+
+// get single book
+bookRouter.get('/:bookId', getBookById)
+bookRouter.put('/:bookId', updateBookController)
+
+bookRouter.delete('/:bookId', deleteBookController)
 
 module.exports = bookRouter;

@@ -3,9 +3,7 @@ const { createBookController, listBookController, getBookById, updateBookControl
 
 const bookRouter = express.Router();
 
-bookRouter.post('/',createBookController)
 
-bookRouter.get('/',listBookController)
 
 // (req,res,next)=>{}
 bookRouter.get('/test', (req1,res,next)=>{
@@ -40,6 +38,9 @@ bookRouter.get('/test', (req1,res,next)=>{
     next()
 }, )
 
+bookRouter.post('/',createBookController)
+
+bookRouter.get('/',listBookController)
 // get single book
 bookRouter.get('/:bookId', getBookById)
 bookRouter.put('/:bookId', updateBookController)

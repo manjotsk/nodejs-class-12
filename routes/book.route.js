@@ -1,6 +1,7 @@
 const express = require('express');
 const { createBookController, listBookController, getBookById, updateBookController, deleteBookController } = require('../controller/book.controller');
 const { createBookBodySchema } = require('../validation-schemas/books.validation-schema');
+const { validationMiddleware } = require('../middlewares/validation.middleware');
 
 const bookRouter = express.Router();
 
@@ -39,17 +40,7 @@ bookRouter.get('/test', (req1,res,next)=>{
     next()
 }, )
 
-bookRouter.post('/',async (req,res,next)=>{
-    const bookBody = req.body
-    try {
-        await createBookBodySchema.validateAsync(bookBody)
-
-        next()
-    } catch (error) {
-        res.status(400).send(error)
-        return
-    }
-},createBookController) // create book
+bookRouter.post('/',validationMiddleware(createBookBodySchema),createBookController) // create book
 
 bookRouter.get('/',listBookController)
 // get single book

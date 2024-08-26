@@ -34,6 +34,11 @@ function func2(){
 }
 
 function func1() {
+    console.log(`func1`)
+    console.log(`func1`)
+    console.log(`func1`)
+    console.log(`func1`)
+    console.log(`func1`)
     return func2
 }
 

@@ -16,7 +16,10 @@ const createSocialMediaPostController = async (req, res, next) => {
 
 const listSocialMediaPostController = async (req, res, next) => {
   try {
-    const listOfSocialMediaPost = await listSocialMediaPosts();
+    const listOfSocialMediaPost = await listSocialMediaPosts({
+      page: req.query.page,
+      limit: req.query.limit,
+    });
     res.send({
       message: "ok",
       data: listOfSocialMediaPost,

@@ -15,8 +15,14 @@ const createSocialMediaPost = async (socialMediaPost) => {
   return await newSocialMediaPost.save();
 };
 
-const listSocialMediaPosts = async () => {
-  const socialMediaPosts = await SocialMediaPost.find(); // array
+const listSocialMediaPosts = async (
+  { page, limit }
+) => {
+  if (page < 1) {
+    return [];
+  }
+  const skip = (page - 1) * limit;
+  const socialMediaPosts = await SocialMediaPost.find().limit(limit).skip(skip);
   return socialMediaPosts;
 };
 
@@ -29,7 +35,10 @@ const updateSocialMediaPost = async (socialMediaPostId, fieldsToUpdate) => {
   const filterCriteria = {
     _id: mongoose.Types.ObjectId.createFromHexString(socialMediaPostId),
   };
-  const updatedSocialMediaPost = await SocialMediaPost.updateOne(filterCriteria, fieldsToUpdate);
+  const updatedSocialMediaPost = await SocialMediaPost.updateOne(
+    filterCriteria,
+    fieldsToUpdate
+  );
 
   return updatedSocialMediaPost;
 };

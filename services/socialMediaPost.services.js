@@ -23,7 +23,7 @@ const listSocialMediaPosts = async (
   }
 
   const skip = (page - 1) * limit;
-  const socialMediaPosts = await SocialMediaPost.find().limit(limit).skip(skip).sort(sortByField);
+  const socialMediaPosts = await SocialMediaPost.find().limit(limit).skip(skip).sort(sortByField).sort('_id')
   return socialMediaPosts;
 };
 

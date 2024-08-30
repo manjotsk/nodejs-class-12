@@ -16,13 +16,14 @@ const createSocialMediaPost = async (socialMediaPost) => {
 };
 
 const listSocialMediaPosts = async (
-  { page, limit }
+  { page, limit, sortByField }
 ) => {
   if (page < 1) {
     return [];
   }
+
   const skip = (page - 1) * limit;
-  const socialMediaPosts = await SocialMediaPost.find().limit(limit).skip(skip);
+  const socialMediaPosts = await SocialMediaPost.find().limit(limit).skip(skip).sort(sortByField);
   return socialMediaPosts;
 };
 

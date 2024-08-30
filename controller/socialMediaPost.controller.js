@@ -19,6 +19,7 @@ const listSocialMediaPostController = async (req, res, next) => {
     const listOfSocialMediaPost = await listSocialMediaPosts({
       page: req.query.page,
       limit: req.query.limit,
+      sortByField: req.query.sortByField,
     });
     res.send({
       message: "ok",

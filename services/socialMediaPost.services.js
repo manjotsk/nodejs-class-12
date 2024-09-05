@@ -16,14 +16,36 @@ const createSocialMediaPost = async (socialMediaPost) => {
 };
 
 const listSocialMediaPosts = async (
-  { page, limit, sortByField }
+  { page, limit, sortByField, keyword }
 ) => {
   if (page < 1) {
     return [];
   }
 
   const skip = (page - 1) * limit;
-  const socialMediaPosts = await SocialMediaPost.find().limit(limit).skip(skip).sort(sortByField).sort('_id')
+  // const socialMediaPosts = await SocialMediaPost.find().limit(limit).skip(skip).sort(sortByField).sort('_id');
+  const socialMediaPosts = await SocialMediaPost.aggregate([
+    {
+      $match : {
+        title : {
+          $regex : keyword,
+          $options: 'i'
+        }
+      }
+    },
+    {
+      $sort : {
+        [sortByField]: -1
+      }
+    },
+    {
+      $limit: +limit
+    },
+    {
+      $skip: skip
+    },
+  ])
+
   return socialMediaPosts;
 };
 

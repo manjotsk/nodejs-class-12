@@ -20,6 +20,7 @@ const listSocialMediaPostController = async (req, res, next) => {
       page: req.query.page,
       limit: req.query.limit,
       sortByField: req.query.sortByField,
+      keyword: req.query.keyword
     });
     res.send({
       message: "ok",

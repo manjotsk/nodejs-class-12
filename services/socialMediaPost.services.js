@@ -15,9 +15,7 @@ const createSocialMediaPost = async (socialMediaPost) => {
   return await newSocialMediaPost.save();
 };
 
-const listSocialMediaPosts = async (
-  { page, limit, sortByField, keyword }
-) => {
+const listSocialMediaPosts = async ({ page, limit, sortByField, keyword }) => {
   if (page < 1) {
     return [];
   }
@@ -26,25 +24,35 @@ const listSocialMediaPosts = async (
   // const socialMediaPosts = await SocialMediaPost.find().limit(limit).skip(skip).sort(sortByField).sort('_id');
   const socialMediaPosts = await SocialMediaPost.aggregate([
     {
-      $match : {
-        title : {
-          $regex : keyword,
-          $options: 'i'
-        }
-      }
+      $match: {
+        $or: [
+          {
+            title: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+          // {
+          //   content: {
+          //     $regex: keyword,
+          //     $options: "i",
+          //   },
+          // },
+        ],
+      },
     },
     {
-      $sort : {
-        [sortByField]: -1
-      }
+      $sort: {
+        [sortByField]: -1,
+      },
     },
     {
-      $limit: +limit
+      $limit: +limit,
     },
     {
-      $skip: skip
+      $skip: skip,
     },
-  ])
+  ]);
 
   return socialMediaPosts;
 };

@@ -32,12 +32,12 @@ const listSocialMediaPosts = async ({ page, limit, sortByField, keyword }) => {
               $options: "i",
             },
           },
-          // {
-          //   content: {
-          //     $regex: keyword,
-          //     $options: "i",
-          //   },
-          // },
+          {
+            content: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
         ],
       },
     },

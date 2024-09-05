@@ -42,6 +42,12 @@ const listSocialMediaPosts = async ({ page, limit, sortByField, keyword }) => {
       },
     },
     {
+      $project: {
+        _id: 0,
+        __v: 0
+      }
+    },
+    {
       $sort: {
         [sortByField]: -1,
       },
@@ -52,6 +58,7 @@ const listSocialMediaPosts = async ({ page, limit, sortByField, keyword }) => {
     {
       $skip: skip,
     },
+
   ]);
 
   return socialMediaPosts;

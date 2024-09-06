@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Address = require('./address.model')
 
 const customerSchema = new mongoose.Schema({
     name: {
@@ -11,6 +12,10 @@ const customerSchema = new mongoose.Schema({
     email: {
         type: String,
         // unique: true
+    },
+    billingAddress: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Address,
     },
     phoneNumber: {
         type: String,

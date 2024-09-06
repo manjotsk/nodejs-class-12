@@ -44,7 +44,8 @@ const listSocialMediaPosts = async ({ page, limit, sortByField, keyword }) => {
     {
       $project: {
         _id: 0,
-        __v: 0
+        __v: 0,
+        title: 0
       }
     },
     {

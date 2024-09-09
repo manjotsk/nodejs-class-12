@@ -3,6 +3,7 @@ const {
   createCustomer,
   getCustomerById,
   listCustomers,
+  listCustomersUsingAggregate,
 } = require("../services/customer.services");
 
 const createCustomerController = async (req, res, next) => {
@@ -20,15 +21,19 @@ try {
   const customerId = req.query.id; // as a string
   const filterCriteria = {
     customerId: !customerId ? undefined: mongoose.Types.ObjectId.createFromHexString(customerId), // string converts to ObjectId
+    city: req.query.city,
+    state: req.query.state,
   };
   const parameter = { filterCriteria };
-  const listOfCustomers = await listCustomers(parameter);
+  // const listOfCustomers = await listCustomers(parameter);
+  const listOfCustomers = await listCustomersUsingAggregate(parameter);
   res.send({
     message: "Success",
     data: listOfCustomers,
   });
 } catch (error) {
-  console.log(500,"Something went")
+  console.log(error)
+  console.log(500,"Something went wrong")
 }
 };
 

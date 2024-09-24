@@ -25,20 +25,10 @@ const listSocialMediaPosts = async ({ page, limit, sortByField, keyword }) => {
   const socialMediaPosts = await SocialMediaPost.aggregate([
     {
       $match: {
-        $or: [
-          {
-            title: {
-              $regex: keyword,
-              $options: "i",
-            },
-          },
-          {
-            content: {
-              $regex: keyword,
-              $options: "i",
-            },
-          },
-        ],
+        title: {
+          $regex: keyword,
+          $options: "i",
+        },
       },
     },
     {
@@ -54,12 +44,11 @@ const listSocialMediaPosts = async ({ page, limit, sortByField, keyword }) => {
       },
     },
     {
-      $limit: +limit,
-    },
-    {
       $skip: skip,
     },
-
+    {
+      $limit: +limit,
+    },
   ]);
 
   return socialMediaPosts;

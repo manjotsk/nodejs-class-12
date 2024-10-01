@@ -26,7 +26,10 @@ const login = async ({
     if (!user) {
         throw new Error('User not found');
     }
-    const isPasswordMatch = bcrypt.compareSync(/**user typed password */ password, /*database password*/ user.password);
+    const isPasswordMatch = bcrypt.compareSync(
+        /**user typed password */ password, 
+        /*database hashed password*/ user.password
+    );
     if (!isPasswordMatch) {
         throw new Error('Password is incorrect');
     }

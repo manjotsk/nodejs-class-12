@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-var md5 = require('md5');
+const md5 = require('md5');
 const fs = require('fs');
 
 const password = process.argv[2];

@@ -6,6 +6,7 @@ const { validationMiddleware } = require('../middlewares/validation.middleware')
 const customerRouter = express.Router()
 
 customerRouter.post('/',validationMiddleware(createCustomerBodySchema),createCustomerController)
+
 // get all customers
 customerRouter.get('/', listCustomersController)
 

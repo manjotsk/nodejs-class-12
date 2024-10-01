@@ -5,9 +5,6 @@ const { createSocialMediaPostBodySchema } = require('../validation-schemas/socia
 
 const socialMediaPostRouter = express.Router();
 
-
-
-
 socialMediaPostRouter.post('/',validationMiddleware(createSocialMediaPostBodySchema) ,createSocialMediaPostController) // create socialMediaPost
 
 socialMediaPostRouter.get('/',listSocialMediaPostController)

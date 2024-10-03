@@ -1,42 +1,71 @@
-const bcrypt = require('bcrypt');
-const User = require('../models/user.model');
-const register = async ({
-    username,
-    password,
-    name,
-    role
-}) => {
-    const hashPassword = bcrypt.hashSync(password, 10);
-    const user = new User({
-        username,
-        password: hashPassword,
-        name,
-        role
-    });
-    return user.save();
-}
+const bcrypt = require("bcrypt");
+const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
+const HttpException = require("../exceptions");
 
-const login = async ({
+const register = async ({ username, password, name, role }) => {
+  const hashPassword = bcrypt.hashSync(password, 10);
+  const user = new User({
     username,
-    password
-}) => {
-    const user = await User.findOne({
-        username: username
-    });
-    if (!user) {
-        throw new Error('User not found');
+    password: hashPassword,
+    name,
+    role,
+  });
+  return user.save();
+};
+
+const login = async ({ username, password }) => {
+  let user = await User.findOne({
+    username: username,
+  }).lean();
+  if (!user) {
+    throw new Error("User not found");
+  }
+  const isPasswordMatch = bcrypt.compareSync(
+    /**user typed password */ password,
+    /*database hashed password*/ user.password
+  );
+  if (!isPasswordMatch) {
+    throw new Error("Password is incorrect");
+  }
+  delete user.password;
+  return user;
+};
+
+const generateJwtToken = (payload) => {
+  const token = jwt.sign(
+    payload,
+    "sddhslkhdsvjbdskjbsdvskldvldjfbdhfjswjsvdb",
+    {
+      expiresIn: "20s",
     }
-    const isPasswordMatch = bcrypt.compareSync(
-        /**user typed password */ password, 
-        /*database hashed password*/ user.password
+  );
+  return token;
+};
+
+const verifyToken = (token) => {
+  if (!token) throw new HttpException(400, "Token not Supplied");
+
+  let isVerified;
+  try {
+    isVerified = jwt.verify(
+      token,
+      "sddhslkhdsvjbdskjbsdvskldvldjfbdhfjswjsvdb"
     );
-    if (!isPasswordMatch) {
-        throw new Error('Password is incorrect');
+  } catch (error) {
+    if (error.message === "jwt expired") {
+      throw new HttpException(400, "Token Expired");
     }
-    return user;
-}
+    throw new HttpException(400, error.message);
+
+  }
+
+  return isVerified;
+};
 
 module.exports = {
-    register,
-    login
-}
+  register,
+  login,
+  generateJwtToken,
+  verifyToken,
+};

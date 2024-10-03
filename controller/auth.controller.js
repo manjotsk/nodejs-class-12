@@ -1,4 +1,4 @@
-const { register, login } = require("../services/auth.services");
+const { register, login, generateJwtToken, verifyToken } = require("../services/auth.services");
 
 const registerController = async (req, res, next) => {
     try {
@@ -34,9 +34,12 @@ const loginController = async (req, res, next) => {
             username,
             password
         });
+        const authToken = generateJwtToken(user)
+        // token generation service
         res.send({
             message: "OK",
-            user
+            user,
+            authToken
         });
     } catch (error) {
         console.error(error);
@@ -44,7 +47,19 @@ const loginController = async (req, res, next) => {
     }
 }
 
+const verifyController = (req, res) => {
+    try {
+        const bearerToken = req.headers.authorization
+        const token = bearerToken.split(" ")[1]
+        const isVerified = verifyToken(token)
+        res.send(isVerified)
+    } catch (error) {
+        res.send(error.status || 500, error.message|| "something went wrong");
+    }
+}
+
 module.exports = {
     registerController,
-    loginController
+    loginController,
+    verifyController
 }

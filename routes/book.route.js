@@ -2,6 +2,7 @@ const express = require('express');
 const { createBookController, listBookController, getBookById, updateBookController, deleteBookController } = require('../controller/book.controller');
 const { createBookBodySchema } = require('../validation-schemas/books.validation-schema');
 const { validationMiddleware } = require('../middlewares/validation.middleware');
+const { verifyMiddleware } = require('../controller/auth.controller');
 
 const bookRouter = express.Router();
 
@@ -40,13 +41,13 @@ bookRouter.get('/test', (req1,res,next)=>{
     next()
 }, )
 
-bookRouter.post('/',validationMiddleware(createBookBodySchema),createBookController) // create book
+bookRouter.post('/',validationMiddleware(createBookBodySchema), verifyMiddleware,createBookController) // create book
 
-bookRouter.get('/',listBookController)
+bookRouter.get('/',verifyMiddleware,listBookController)
 // get single book
-bookRouter.get('/:bookId', getBookById)
-bookRouter.put('/:bookId', updateBookController)
+bookRouter.get('/:bookId',verifyMiddleware, getBookById)
+bookRouter.put('/:bookId',verifyMiddleware, updateBookController)
 
-bookRouter.delete('/:bookId', deleteBookController)
+bookRouter.delete('/:bookId',verifyMiddleware, deleteBookController)
 
 module.exports = bookRouter;

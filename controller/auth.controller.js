@@ -34,8 +34,8 @@ const loginController = async (req, res, next) => {
             username,
             password
         });
-        const authToken = generateJwtToken(user)
         // token generation service
+        const authToken = generateJwtToken(user);
         res.send({
             message: "OK",
             user,
@@ -58,8 +58,25 @@ const verifyController = (req, res) => {
     }
 }
 
+const verifyMiddleware = (req, res, next) => {
+    try {
+        const bearerToken = req.headers.authorization
+        const token = bearerToken.split(" ")[1]
+        const isVerified = verifyToken(token)
+        if(isVerified){
+            next()
+        } else {
+            res.send(401,"Token not valid")
+        }
+    } catch (error) {
+        res.send(401,"Token not valid")
+    }
+}
+
+
 module.exports = {
     registerController,
     loginController,
-    verifyController
+    verifyController,
+    verifyMiddleware
 }

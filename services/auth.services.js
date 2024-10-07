@@ -3,6 +3,8 @@ const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const HttpException = require("../exceptions");
 
+const secret = 'sample-token-secret'
+
 const register = async ({ username, password, name, role }) => {
   const hashPassword = bcrypt.hashSync(password, 10);
   const user = new User({
@@ -35,9 +37,9 @@ const login = async ({ username, password }) => {
 const generateJwtToken = (payload) => {
   const token = jwt.sign(
     payload,
-    "sddhslkhdsvjbdskjbsdvskldvldjfbdhfjswjsvdb",
+    secret,
     {
-      expiresIn: "20s",
+      expiresIn: "1d",
     }
   );
   return token;
@@ -46,11 +48,11 @@ const generateJwtToken = (payload) => {
 const verifyToken = (token) => {
   if (!token) throw new HttpException(400, "Token not Supplied");
 
-  let isVerified;
+  let isVerified = false;
   try {
     isVerified = jwt.verify(
       token,
-      "sddhslkhdsvjbdskjbsdvskldvldjfbdhfjswjsvdb"
+      secret
     );
   } catch (error) {
     if (error.message === "jwt expired") {
